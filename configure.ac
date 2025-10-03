@@ -96,7 +96,7 @@ AC_CHECK_FILE([configure.custom],
 	[
 		configure_custom_file=""
 		custom_git_domain="github.com"
-		custom_git_org="yahoojapan"
+		custom_git_org="ggtakec"
 		custom_git_repo="fullock"
 		custom_git_endpoint="https://api.github.com/repos/"
 		custom_dev_email="ml-antpickax-support@lycorp.co.jp"
