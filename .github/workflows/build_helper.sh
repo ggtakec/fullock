@@ -1254,6 +1254,21 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 			exit 1
 		fi
 	fi
+
+	# [NOTE]
+	# For Ruby 3.4.0 and later, you must manually install the addrev gem package.
+	#
+	RB_MAJOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $1}')
+	RB_MINOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $2}')
+	RB_PATCH_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $3}')
+	RB_ALL_VER=$((RB_MAJOR_VER*1000000 + RB_MINOR_VER*1000 + RB_PATCH_VER))
+
+	if [ "${RB_ALL_VER}" -ge 3004000 ]; then
+		if ({ RUNCMD "${GEM_BIN}" "${GEM_INSTALL_CMD}" abbrev || echo > "${PIPEFAILURE_FILE}"; } | sed -e 's/^/    /g') && rm "${PIPEFAILURE_FILE}" >/dev/null 2>&1; then
+			PRNERR "Failed to install addrev gem"
+			exit 1
+		fi
+	fi
 else
 	PRNINFO "Skip to install published tools for uploading packages to packagecloud.io, because this CI process does not upload any packages."
 fi
