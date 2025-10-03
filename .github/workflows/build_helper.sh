@@ -1258,10 +1258,18 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 	# [NOTE]
 	# For Ruby 3.4.0 and later, you must manually install the addrev gem package.
 	#
+	PRNINFO "Ruby version :"
+	ruby -v
+
 	RB_MAJOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $1}')
 	RB_MINOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $2}')
 	RB_PATCH_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $3}')
-	RB_ALL_VER=$((RB_MAJOR_VER*1000000 + RB_MINOR_VER*1000 + RB_PATCH_VER))
+	RB_MAJOR_VER=$((RB_MAJOR_VER * 10000))
+	RB_MINOR_VER=$((RB_MINOR_VER * 100))
+	RB_ALL_VER=$((RB_MAJOR_VER + RB_MINOR_VER))
+	RB_ALL_VER=$((RB_ALL_VER + RB_PATCH_VER))
+
+	PRNINFO "Ruby version : ${RB_ALL_VER}"
 
 	if [ "${RB_ALL_VER}" -ge 3004000 ]; then
 		if ({ RUNCMD "${GEM_BIN}" "${GEM_INSTALL_CMD}" abbrev || echo > "${PIPEFAILURE_FILE}"; } | sed -e 's/^/    /g') && rm "${PIPEFAILURE_FILE}" >/dev/null 2>&1; then
