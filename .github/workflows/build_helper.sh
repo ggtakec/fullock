@@ -1261,13 +1261,13 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 	PRNINFO "Ruby version :"
 	ruby -v
 
-	RB_MAJOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $1}')
-	RB_MINOR_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $2}')
-	RB_PATCH_VER=$(ruby -v | awk '{print $2}' | awk -F'.' '{print $3}')
-	RB_MAJOR_VER=$((RB_MAJOR_VER * 10000))
-	RB_MINOR_VER=$((RB_MINOR_VER * 100))
-	RB_ALL_VER=$((RB_MAJOR_VER + RB_MINOR_VER))
-	RB_ALL_VER=$((RB_ALL_VER + RB_PATCH_VER))
+	RB_MAJOR_VER=$(ruby -v | awk '{print $2}' | awk -F'[^0-9]' '{print $1}')
+	RB_MINOR_VER=$(ruby -v | awk '{print $2}' | awk -F'[^0-9]' '{print $2}')
+	RB_PATCH_VER=$(ruby -v | awk '{print $2}' | awk -F'[^0-9]' '{print $3}')
+#	RB_MAJOR_VER=$((RB_MAJOR_VER * 10000))
+#	RB_MINOR_VER=$((RB_MINOR_VER * 100))
+	RB_ALL_VER=$((RB_MAJOR_VER*10000 + RB_MINOR_VER*100 + RB_PATCH_VER))
+#	RB_ALL_VER=$((RB_ALL_VER + RB_PATCH_VER))
 
 	PRNINFO "Ruby version : ${RB_ALL_VER}"
 
