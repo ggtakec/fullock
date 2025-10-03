@@ -1277,8 +1277,13 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 			PRNERR "Failed to install addrev gem"
 			exit 1
 		fi
+		PRNINFO "Start to install json gem"
+		if ({ RUNCMD "${GEM_BIN}" "${GEM_INSTALL_CMD}" json || echo > "${PIPEFAILURE_FILE}"; } | sed -e 's/^/    /g') && rm "${PIPEFAILURE_FILE}" >/dev/null 2>&1; then
+			PRNERR "Failed to install json gem"
+			exit 1
+		fi
 	else
-		PRNINFO "Skip to install addrev gem"
+		PRNINFO "Skip to install addrev and json gem"
 	fi
 else
 	PRNINFO "Skip to install published tools for uploading packages to packagecloud.io, because this CI process does not upload any packages."
