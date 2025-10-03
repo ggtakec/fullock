@@ -1281,12 +1281,13 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 		PRNINFO "Skip to install addrev gem"
 	fi
 
-	if [ "${IS_OS_FEDORA}" -eq 1 ] && echo "${CI_OSTYPE}" | sed -e 's#:##g' | grep -q -i 'fedora42'; then
+	if [ "${IS_OS_FEDORA}" -eq 1 ] && echo "${CI_OSTYPE}" | sed -e 's#:##g' | grep -q -i '42'; then
 		PRNINFO "Start to install json gem"
 		if ({ RUNCMD "${GEM_BIN}" "${GEM_INSTALL_CMD}" json -v 2.9.1 || echo > "${PIPEFAILURE_FILE}"; } | sed -e 's/^/    /g') && rm "${PIPEFAILURE_FILE}" >/dev/null 2>&1; then
 			PRNERR "Failed to install json gem"
 			exit 1
 		fi
+#		gem list json --no-versions | grep '^json ' | awk '{print $2}' | tr -d '(),' | tr ',' '\n' | grep -v '^2.9.1$' | xargs -n1 gem uninstall json -v -aIx
 	fi
 else
 	PRNINFO "Skip to install published tools for uploading packages to packagecloud.io, because this CI process does not upload any packages."
