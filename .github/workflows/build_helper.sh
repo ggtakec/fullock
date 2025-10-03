@@ -1287,7 +1287,10 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 			PRNERR "Failed to install json gem"
 			exit 1
 		fi
-		gem list json --no-versions | grep '^json ' | awk '{print $2}' | tr -d '(),' | tr ',' '\n' | grep -v '^2.9.1$' | xargs -n1 gem uninstall json -v -aIx
+
+		for v in $(gem list json | grep '^json ' | sed 's/.*(\(.*\))/\1/' | tr ',' '\n' | tr -d ' ' | grep -v '^2.9.1$'); do
+			gem uninstall json -v "$v" -aIx
+		done
 	fi
 else
 	PRNINFO "Skip to install published tools for uploading packages to packagecloud.io, because this CI process does not upload any packages."
