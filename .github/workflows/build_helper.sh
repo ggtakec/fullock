@@ -1283,8 +1283,8 @@ if [ "${CI_DO_PUBLISH}" -eq 1 ]; then
 
 	if [ "${IS_OS_FEDORA}" -eq 1 ] && echo "${CI_OSTYPE}" | sed -e 's#:##g' | grep -q -i 'fedora42'; then
 		PRNINFO "Start to install json gem"
-		for path in $(gem env gempath | tr ':' '\n'); do
-			gem uninstall -i $path json -aIx
+		for json_path in $(gem env gempath | tr ':' '\n'); do
+			gem uninstall -i "${json_path}" json -aIx
 		done
 
 		if ({ RUNCMD "${GEM_BIN}" "${GEM_INSTALL_CMD}" json -v 2.9.1 || echo > "${PIPEFAILURE_FILE}"; } | sed -e 's/^/    /g') && rm "${PIPEFAILURE_FILE}" >/dev/null 2>&1; then
